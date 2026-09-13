@@ -8,6 +8,7 @@ import { MediaViewer } from "./MediaViewer";
 
 interface PostCardProps {
   post: Post;
+  priority?: boolean;
 }
 
 const KAZAKH_MONTHS = [
@@ -66,7 +67,7 @@ function renderFormattedText(text: string) {
                       href={word}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-telegram hover:underline font-medium break-all"
+                      className="text-telegram-text dark:text-telegram-darkText hover:underline font-semibold break-all"
                     >
                       {word}
                     </a>{" "}
@@ -77,7 +78,7 @@ function renderFormattedText(text: string) {
               if (word.startsWith("#") && word.length > 1) {
                 return (
                   <React.Fragment key={wIdx}>
-                    <span className="text-telegram font-medium">{word}</span>{" "}
+                    <span className="text-telegram-text dark:text-telegram-darkText font-semibold">{word}</span>{" "}
                   </React.Fragment>
                 );
               }
@@ -90,7 +91,7 @@ function renderFormattedText(text: string) {
   );
 }
 
-export function PostCard({ post }: PostCardProps) {
+export function PostCard({ post, priority = false }: PostCardProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopyLink = async () => {
@@ -110,10 +111,10 @@ export function PostCard({ post }: PostCardProps) {
     <article className="group rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition-all hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900">
       {/* Post Metadata Header */}
       <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 dark:border-zinc-800/80">
-        <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-400">
+        <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-zinc-400">
           <Link
             href={`/post/${post.id}`}
-            className="font-semibold text-telegram hover:underline"
+            className="font-bold text-telegram-text dark:text-telegram-darkText hover:underline"
             title={`Жазба #${post.id} жеке бетін ашу`}
           >
             #{post.id}
@@ -125,7 +126,7 @@ export function PostCard({ post }: PostCardProps) {
         <div className="flex items-center gap-2">
           {post.views > 0 && (
             <div
-              className="inline-flex items-center gap-1 text-xs text-slate-400 dark:text-zinc-500"
+              className="inline-flex items-center gap-1 text-xs text-slate-600 dark:text-zinc-400"
               title="Көрілім саны"
             >
               <Eye className="h-3.5 w-3.5" />
@@ -137,7 +138,8 @@ export function PostCard({ post }: PostCardProps) {
           <button
             onClick={handleCopyLink}
             title="Сілтемені көшіру"
-            className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors"
+            aria-label={`#${post.id} жазбасының сілтемесін көшіру`}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors"
           >
             {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
           </button>
@@ -148,7 +150,8 @@ export function PostCard({ post }: PostCardProps) {
             target="_blank"
             rel="noopener noreferrer"
             title="Telegram-нан ашу"
-            className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-telegram hover:bg-telegram/10 transition-colors"
+            aria-label={`#${post.id} жазбасын түпнұсқа Telegram арнасында ашу`}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-telegram-text dark:text-telegram-darkText hover:bg-telegram/10 transition-colors"
           >
             <ExternalLink className="h-3.5 w-3.5" />
           </a>
@@ -156,7 +159,7 @@ export function PostCard({ post }: PostCardProps) {
       </div>
 
       {/* Media Content */}
-      <MediaViewer media={post.media} postId={post.id} telegramUrl={post.url} />
+      <MediaViewer media={post.media} postId={post.id} telegramUrl={post.url} priority={priority} />
 
       {/* Post Text */}
       <div className="mt-3">{renderFormattedText(post.text)}</div>

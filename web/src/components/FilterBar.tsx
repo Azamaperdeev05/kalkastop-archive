@@ -82,10 +82,10 @@ export function FilterBar({
                 <Icon className="h-3.5 w-3.5" />
                 <span>{f.label}</span>
                 <span
-                  className={`ml-0.5 rounded-full px-1.5 py-0.2 text-[10px] font-semibold ${
+                  className={`ml-0.5 rounded-full px-1.5 py-0.2 text-[10px] font-bold ${
                     isActive
                       ? "bg-white/20 text-white dark:bg-zinc-900/20 dark:text-zinc-900"
-                      : "bg-slate-100 text-slate-500 dark:bg-zinc-800 dark:text-zinc-400"
+                      : "bg-slate-200/80 text-slate-800 dark:bg-zinc-800 dark:text-zinc-200"
                   }`}
                 >
                   {f.count.toLocaleString()}

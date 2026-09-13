@@ -15,6 +15,8 @@ export default {
           hover: "#1F8EC5",
           dark: "#17729F",
           light: "#EBF6FC",
+          text: "#006FA6",
+          darkText: "#38BDF8",
         },
       },
       fontFamily: {

@@ -267,7 +267,7 @@ export default async function PostDetailPage({ params }: PageProps) {
 
           {/* Media Content */}
           <div className="my-4">
-            <MediaViewer media={post.media} postId={post.id} telegramUrl={post.url} />
+            <MediaViewer media={post.media} postId={post.id} telegramUrl={post.url} priority={true} />
           </div>
 
           {/* Post Text */}
@@ -288,7 +288,7 @@ export default async function PostDetailPage({ params }: PageProps) {
                             href={word}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-telegram hover:underline font-medium break-all"
+                            className="text-telegram-text dark:text-telegram-darkText hover:underline font-semibold break-all"
                           >
                             {word}
                           </a>{" "}
@@ -298,7 +298,7 @@ export default async function PostDetailPage({ params }: PageProps) {
                     if (word.startsWith("#") && word.length > 1) {
                       return (
                         <React.Fragment key={wIdx}>
-                          <span className="text-telegram font-medium">{word}</span>{" "}
+                          <span className="text-telegram-text dark:text-telegram-darkText font-semibold">{word}</span>{" "}
                         </React.Fragment>
                       );
                     }

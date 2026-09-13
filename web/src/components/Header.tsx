@@ -50,12 +50,12 @@ export function Header({ totalPosts }: HeaderProps) {
                   Архив
                 </span>
               </div>
-              <p className="truncate text-xs sm:text-sm text-slate-500 dark:text-zinc-400">
+              <p className="truncate text-xs sm:text-sm text-slate-600 dark:text-zinc-300">
                 <a
                   href="https://t.me/kalkastop"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-telegram hover:underline"
+                  className="font-semibold text-telegram-text dark:text-telegram-darkText hover:underline"
                 >
                   @kalkastop
                 </a>
@@ -75,8 +75,8 @@ export function Header({ totalPosts }: HeaderProps) {
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+              aria-label="Сайт режимін ауыстыру (жарық/қараңғы)"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 dark:border-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-800 transition-colors"
             >
               {isDark ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4" />}
             </button>
@@ -85,6 +85,7 @@ export function Header({ totalPosts }: HeaderProps) {
               href="https://t.me/kalkastop"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Калькасыз қазақ тілі ресми Telegram арнасына өту"
               className="inline-flex items-center gap-1.5 rounded-xl bg-telegram px-3 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-telegram-hover transition-colors"
             >
               <Send className="h-3.5 w-3.5" />
