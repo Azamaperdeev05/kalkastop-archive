@@ -1,0 +1,45 @@
+# Environment and secrets (NEVER commit)
+.env
+*.env
+!.env.example
+.env*.local
+
+# Telethon session files
+*.session
+*.session-journal
+
+# Python caches and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# SQLite databases & export archives
+*.db
+*.db-wal
+*.db-shm
+export/
+
+# Web Next.js & Node
+web/node_modules/
+web/.next/
+web/.vercel/
+web/out/
+
+# Large video files (exclude from Git to prevent repository bloat)
+export/media/videos/
+web/public/media/videos/
+
+# System & editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.log
