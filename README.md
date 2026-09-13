@@ -1,124 +1,199 @@
-# Telegram Channel Archive & Web Viewer (@kalkastop)
+# «Калькасыз қазақ тілі» (@kalkastop) — Telegram мұрағаты және веб-архиві
 
-A high-performance local Telegram channel exporter and public web archive viewer for **@kalkastop** ("Калькасыз қазақ тілі. Назгүл Қожабек").
+Назгүл Қожабектің **[@kalkastop](https://t.me/kalkastop)** («Калькасыз қазақ тілі») Telegram арнасының барлық жазбаларын автоматты түрде жинақтайтын локальді жүйе және кез келген қолданушыға арналған ашық веб-платформа.
 
-- 🌐 **Live Web Viewer**: [https://web-tau-ten-13.vercel.app](https://web-tau-ten-13.vercel.app)
-- 📦 **GitHub Repository**: [https://github.com/Azamaperdeev05/kalkastop-archive](https://github.com/Azamaperdeev05/kalkastop-archive)
-- 📱 **Telegram Channel**: [@kalkastop](https://t.me/kalkastop)
-
----
-
-## 🏗️ Architecture Overview
-
-The system consists of two primary components:
-
-1. **Python Exporter & Archive (`/`)**:
-   - Uses Telegram MTProto API via **Telethon** with native `cryptg` encryption.
-   - Extracts complete post history and stores it in an indexed, WAL-enabled **SQLite database** (`export/telegram_archive.db`).
-   - Applies an automated **video duration filter**: only downloads short videos ($\le 120$ seconds); long videos ($> 120$s), audio, and documents are cleanly recorded with status `skipped_*` and metadata preserved in SQLite.
-   - Idempotent and resumable.
-
-2. **Public Web Viewer (`web/`)**:
-   - Modern, minimalist, mobile-first **Next.js 15** application with **Tailwind CSS**.
-   - Read-only data architecture: pre-compiled from SQLite into optimized JSON (`web/src/data/posts.json`), served in paginated chunks via `/api/posts`.
-   - In-memory instant search supporting Kazakh Cyrillic (`ә, і, ң, ғ, ү, ұ, қ, ө, һ`) and Russian characters.
-   - Filter pills: **Барлығы** (All), **Медиамен** (With media), **Мәтін** (Text only), **Бейне** (Videos).
-   - Media viewer with image lightbox, video player with duration badge, and graceful Telegram fallback cards.
-   - Light/Dark mode support.
-   - Production-ready for **Vercel** deployment.
+- 🌐 **Онлайн веб-сайт**: [https://web-tau-ten-13.vercel.app](https://web-tau-ten-13.vercel.app)
+- 📦 **GitHub репозиторийі**: [https://github.com/Azamaperdeev05/kalkastop-archive](https://github.com/Azamaperdeev05/kalkastop-archive)
+- 📱 **Түпнұсқа Telegram арнасы**: [@kalkastop](https://t.me/kalkastop)
 
 ---
 
-## 📁 Repository Structure
+## 📌 Жоба туралы
+
+«Калькасыз қазақ тілі» — қазақ тіліндегі калька сөздер мен стилистикалық қателерді қарапайым әрі түсінікті тілмен түсіндіретін ең танымал әрі құнды арналардың бірі. Бұл жобаның мақсаты:
+1. Арнаның 2020 жылдан бергі **барлық 4,459 жазбасын** жоғалтпай, жергілікті SQLite дерекқорына толық көшіріп алу.
+2. Медиафайлдарды ақылды сүзу: тек **$\le 120$ секундтық қысқа бейнелерді** және фотосуреттерді жүктеп, дискіде орын үнемдеу.
+3. Әрбір адамға ыңғайлы, іздеу жүйесі бар, жылдам әрі заманауи веб-сайт ұсыну.
+
+---
+
+## 📊 Мұрағат көрсеткіштері
+
+| Көрсеткіш | Сан | Сипаттамасы |
+|---|---|---|
+| **Барлық жазбалар** | **4 459** | Арнадағы 100% жазбалар тарихы (#1-ден #4589-ға дейін) |
+| **Жүктелген фотолар** | **961** | `web/public/media/images/` қалтасында (55 МБ) |
+| **Жүктелген қысқа бейнелер ($\le 120$с)** | **40** | `export/media/videos/` қалтасында (716 МБ) |
+| **Өткізілген ұзақ бейнелер ($> 120$с)** | **28** | Метадеректері дерекқорда сақталды, Telegram сілтемесі бар |
+| **Өткізілген аудио/подкасттар** | **28** | Файлсыз, метадеректері SQLite-та сақталды |
+| **Өткізілген құжаттар (PDF/Doc)** | **14** | Метадеректері SQLite-та сақталды |
+| **Жүктеу қателері** | **0** | Барлық жазбалар сәтті өңделді |
+| **Дерекқор тұтастығы** | **OK** | `PRAGMA integrity_check;` тексеруінен өтті |
+
+---
+
+## 🌟 Веб-платформаның ерекшеліктері
+
+- **Қазақша толықмәтінді іздеу**: Сұраныстарды лезде (3–5 мс ішінде) табады. Қазақ әліпбиінің төл әріптерін (`ә, і, ң, ғ, ү, ұ, қ, ө, һ`) толық қолдайды.
+- **Ыңғайлы сүзгілер**:
+  - *Барлығы* (4 459)
+  - *Медиамен* (1 001)
+  - *Тек мәтін* (3 458)
+  - *Бейнежазбалар* (40 жүктелген + 28 толық нұсқасы)
+- **Медиа көру мүмкіндігі**:
+  - Фотосуреттерді толық экранда үлкейтіп көру (lightbox).
+  - Қысқа бейнелерді браузерде ойнату (HTML5 бейнеойнатқыш + ұзақтық белгісі).
+  - Ұзақ бейнелер мен аудиожазбаларға арналған тікелей Telegram сілтемелері.
+- **Жылдамдық пен ықшамдылық**: Бөліп жүктеу (пагинация) — бір уақытта тек 25 жазба ғана жүктеледі (~10 КБ), трафик үнемделеді.
+- **Сұрыптау реті**: «Жаңалары алдымен» немесе «Ескілері алдымен» режимдері арасында ауысу.
+- **Қараңғы және жарық режим (Dark/Light mode)**.
+- **Мобильді құрылғыларға 100% бейімделген (Mobile-first)**.
+
+---
+
+## 🏛️ Жүйелік архитектура
 
 ```
-├── app.py                      # Python Telegram exporter CLI entrypoint
-├── config.py                   # Configuration and credential loader
-├── database.py                 # SQLite database manager (posts & media tables)
-├── exporter.py                 # Core scraping, duration filtering, and download logic
-├── models.py                   # Data models (Post, MediaItem)
-├── progress.py                 # Terminal progress UI (Rich)
-├── telegram_client.py          # MTProto client connector
+Telegram MTProto API
+       │
+       ▼
+telethon + cryptg (Python CLI)
+       │
+       ▼
+SQLite дерекқоры (export/telegram_archive.db)
+       │
+       ├── scripts/export_web_data.py
+       │
+       ├── web/src/data/posts.json (4,459 жазба, gzipped ~500 КБ)
+       └── web/public/media/images/ (961 фото, 55 МБ)
+              │
+              ▼
+     Next.js 15 (App Router) + Tailwind CSS
+     ├── API: /api/posts (Іздеу, сүзу, пагинация)
+     └── UI: Header, FilterBar, PostCard, MediaViewer
+              │
+              ▼
+        Vercel Global CDN
+   https://web-tau-ten-13.vercel.app
+```
+
+---
+
+## 📁 Жоба құрылымы
+
+```
+.
+├── app.py                      # Telegram-нан жазбаларды экспорттайтын негізгі CLI скрипт
+├── config.py                   # .env баптаулары мен кілттерді оқу модулі
+├── database.py                 # SQLite менеджері (posts және media кестелері, WAL режимі)
+├── exporter.py                 # Негізгі жүктеу, ұзақтықты тексеру (<=120s) логикасы
+├── models.py                   # Деректер үлгісі (Post, MediaItem)
+├── progress.py                 # Терминалдағы әдемі прогресс интерфейсі (Rich)
+├── telegram_client.py          # Telegram MTProto қосылымы (Telethon)
 ├── scripts/
-│   └── export_web_data.py      # SQLite to Web data sync and image export
-├── tests/                      # Automated test suite (29 tests)
-├── export/                     # (Git-ignored) Local SQLite archive & media
+│   └── export_web_data.py      # SQLite-тан JSON жасап, суреттерді веб-жобаға көшіру скрипті
+├── tests/                      # 29 автоматты бірлік тесттері (pytest)
+├── export/                     # (Git-ке қосылмайды) Локальді дерекқор мен жүктелген медиа
 │   ├── telegram_archive.db
 │   └── media/
-│       ├── images/             # 961 downloaded photos
-│       └── videos/             # 40 downloaded short videos (<=120s)
-└── web/                        # Next.js public web viewer
+│       ├── images/             # 961 фото
+│       └── videos/             # 40 қысқа видео
+└── web/                        # Next.js заманауи веб-қосымшасы
     ├── package.json
     ├── public/
-    │   └── media/images/       # 961 photos deployed to Vercel CDN
+    │   └── media/images/       # Vercel CDN-де таратылатын 961 фото
     └── src/
         ├── app/
-        │   ├── api/posts/      # Paginated search/filter API
+        │   ├── api/posts/      # Іздеу және пагинация жасайтын Serverless API
         │   ├── layout.tsx
-        │   └── page.tsx        # Main feed UI
+        │   └── page.tsx        # Негізгі бет (жазбалар легі)
         ├── components/
-        │   ├── FilterBar.tsx
-        │   ├── Header.tsx
-        │   ├── MediaViewer.tsx
-        │   └── PostCard.tsx
+        │   ├── FilterBar.tsx   # Іздеу және сүзгі батырмалары
+        │   ├── Header.tsx      # Бас тақырып, тақырып ауыстырғыш (Dark mode)
+        │   ├── MediaViewer.tsx # Фото/бейне көрсеткіш
+        │   └── PostCard.tsx    # Бір жазба карточкасы (мәтін, уақыт, көрілім)
         ├── data/
-        │   └── posts.json      # 4,459 posts extracted from SQLite
-        └── types/
+        │   └── posts.json      # Дерекқордан дайындалған жеңілдетілген деректер
+        └── types/              # TypeScript интерфейстері
 ```
 
 ---
 
-## 🚀 Local Development
+## 🛠️ Орнату және жергілікті іске қосу
 
-### 1. Python Exporter (Data Fetching)
+### 1. Талаптар
+- Python 3.11+
+- Node.js 18+ және npm
+- Telegram API ID және API Hash ([my.telegram.org](https://my.telegram.org) сайтынан алынады)
+
+### 2. Экспорттаушыны іске қосу (Python)
 
 ```bash
-# Setup Python virtual environment
+# Репозиторийді жүктеп алып, ішіне кіріңіз
+git clone https://github.com/Azamaperdeev05/kalkastop-archive.git
+cd kalkastop-archive
+
+# Python виртуалды ортасын жасау және кітапханаларды орнату
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 
-# Run automated test suite
+# .env файлын дайындау
+cp .env.example .env
+# .env ішіне API_ID және API_HASH мәндерін жазыңыз
+
+# Тесттерді тексеру (29 тест)
 PYTHONPATH=. ./.venv/bin/python -m pytest tests/ -v
 
-# Run exporter for @kalkastop
+# Экспорттауды бастау (@kalkastop үшін)
 python app.py --channel @kalkastop
 ```
 
-### 2. Sync SQLite to Web
+> **Ескерту**: Алғашқы рет қосқанда жүйе телефон нөміріңізді және Telegram жіберген растау кодын сұрайды. Сессия файлы локальді сақталады және Git-ке ешқашан жүктелмейді.
+
+### 3. Деректерді веб-қосымшаға көшіру
 
 ```bash
 python3 scripts/export_web_data.py
 ```
 
-### 3. Run Web Viewer
+### 4. Веб-интерфейсті іске қосу (Next.js)
 
 ```bash
 cd web
 npm install
 npm run dev
-# Open http://localhost:3000
 ```
 
----
-
-## ☁️ Media Architecture & Deployment
-
-### Photos (55 MB)
-- 961 images are stored in `web/public/media/images/`.
-- Deployed directly with the web application and cached globally on Vercel's Edge CDN.
-
-### Videos (716 MB)
-- 40 short videos ($\le 120$ seconds) are stored locally in `export/media/videos/`.
-- To prevent repository bloat and exceed Git/Vercel size limits, raw `.mp4` video files are excluded from Git.
-- **Local Dev**: Videos play directly from local media.
-- **Production**:
-  - Configurable via `NEXT_PUBLIC_MEDIA_URL` (pointing to Vercel Blob or an S3/R2 bucket).
-  - Fallback: Any video not yet uploaded displays an interactive card with exact duration and a direct "Watch on Telegram" button linking to `t.me/kalkastop/{id}`.
+Браузерде **[http://localhost:3000](http://localhost:3000)** сілтемесін ашыңыз.
 
 ---
 
-## 🔒 Security
+## ☁️ Vercel-ге деплой жасау
 
-- `.env`, `*.session`, and SQLite databases are strictly ignored by `.gitignore`.
-- No credentials or API hashes are exposed in public code, bundles, or Git history.
+Веб-жоба Vercel платформасына бейімделген:
+
+```bash
+cd web
+
+# Vercel CLI арқылы деплой жасау
+vercel --prod
+```
+
+### Үлкен файлдарды басқару (Медиа)
+- **Фотосуреттер (55 МБ)**: Репозиторий ішіндегі `web/public/media/images/` қалтасына жинақталып, Vercel-дің Edge CDN желісі арқылы жылдам беріледі.
+- **Бейнежазбалар (716 МБ)**: Git репозиторийін тым ауырлатпау үшін `.mp4` файлдары Git-ке қосылмаған. Қажет болса, бейнелерді **Vercel Blob** немесе **AWS S3 / Cloudflare R2** қоймасына жүктеп, `NEXT_PUBLIC_MEDIA_URL` айнымалысы арқылы қосуға болады. Дефолттық жағдайда бейне карточкасы ұзақтығын көрсетіп, түпнұсқа Telegram жазбасына апарады.
+
+---
+
+## 🔒 Қауіпсіздік
+
+- `.env`, `*.session`, құпия кілттер мен үлкен дерекқор файлдары `.gitignore` арқылы толықтай оқшауланған.
+- Ашық кодта және Vercel серверлерінде ешқандай Telegram жеке мәліметтері немесе авторизация кодтары ашылмайды.
+
+---
+
+## 📄 Авторлық құқық
+
+Арнадағы барлық мәтіндер мен материалдардың авторы — **Назгүл Қожабек**.  
+Бұл жоба тек мәдени, білім беру және мұрағаттау мақсатында жасалған.
