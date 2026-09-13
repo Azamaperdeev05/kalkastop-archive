@@ -186,6 +186,26 @@ vercel --prod
 
 ---
 
+## 🔍 SEO, GEO және Іздеу Жүйелеріне Оңтайландыру
+
+Веб-архив іздеу жүйелері (Google, Yandex) мен заманауи жасанды интеллект іздеу жүйелеріне (Perplexity, ChatGPT Search, Gemini) толықтай бейімделген:
+
+- **Google Search Console верификациясы**: HTML файл (`/google6b11bbffd33748dd.html`) және `<meta name="google-site-verification" ... />` тегтері енгізілген.
+- **Sitemap (4 460 URL)**: `https://web-tau-ten-13.vercel.app/sitemap.xml` арқылы барлық 4 459 жазба мен басты беттің картасы автоматты түрде жасалып, іздеу роботтарына беріледі.
+- **Robots.txt**: `https://web-tau-ten-13.vercel.app/robots.txt` Googlebot, YandexBot, GPTBot, PerplexityBot, т.б. үшін толық ашық.
+- **Жеке жазба беттері (`/post/[id]`)**: Әрбір жазбаның өзіндік уникалды URL-і, динамикалық тақырыбы (Title), сипаттамасы (Description), OpenGraph / Twitter карточкасы бар.
+- **GEO (Геолокация және Қазақстанға бейімдеу)**: 
+  - `geo.region: "KZ"`, `geo.placename: "Kazakhstan"`, `ICBM: "48.0196, 66.9237"`;
+  - `content-language: "kk"`, `hreflang: "kk-KZ"`, `locale: "kk_KZ"`.
+- **Микробелгілеу (Schema.org / JSON-LD)**: 
+  - `WebSite` (ішкі SearchAction іздеу мүмкіндігімен);
+  - `Person` (Автор: Назгүл Қожабек);
+  - `SocialMediaPosting` / `Article` (әр жазба үшін мәтін, автор, дата, көрілім саны);
+  - `BreadcrumbList` (нан қиқымы навигациясы).
+- **Бөлісу мүмкіндігі**: WhatsApp, Telegram арқылы бір батырмамен бөлісу және жазба сілтемесін бір басумен көшіру.
+
+---
+
 ## 🔒 Қауіпсіздік
 
 - `.env`, `*.session`, құпия кілттер мен үлкен дерекқор файлдары `.gitignore` арқылы толықтай оқшауланған.

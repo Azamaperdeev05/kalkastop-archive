@@ -19,3 +19,4 @@ public/media/videos/
 # System
 .DS_Store
 *.log
+.vercel

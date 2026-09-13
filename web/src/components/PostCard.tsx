@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Eye, Share2, ExternalLink, Check, Copy } from "lucide-react";
 import { Post } from "@/types/post";
 import { MediaViewer } from "./MediaViewer";
@@ -94,7 +95,10 @@ export function PostCard({ post }: PostCardProps) {
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(post.url);
+      const shareUrl = typeof window !== "undefined"
+        ? `${window.location.origin}/post/${post.id}`
+        : `https://web-tau-ten-13.vercel.app/post/${post.id}`;
+      await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -107,7 +111,13 @@ export function PostCard({ post }: PostCardProps) {
       {/* Post Metadata Header */}
       <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 dark:border-zinc-800/80">
         <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-400">
-          <span className="font-semibold text-telegram">#{post.id}</span>
+          <Link
+            href={`/post/${post.id}`}
+            className="font-semibold text-telegram hover:underline"
+            title={`Жазба #${post.id} жеке бетін ашу`}
+          >
+            #{post.id}
+          </Link>
           <span>•</span>
           <time dateTime={post.date}>{formatKazakhDate(post.date)}</time>
         </div>
