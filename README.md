@@ -2,6 +2,10 @@
 
 A high-performance local Telegram channel exporter and public web archive viewer for **@kalkastop** ("Калькасыз қазақ тілі. Назгүл Қожабек").
 
+- 🌐 **Live Web Viewer**: [https://web-tau-ten-13.vercel.app](https://web-tau-ten-13.vercel.app)
+- 📦 **GitHub Repository**: [https://github.com/Azamaperdeev05/kalkastop-archive](https://github.com/Azamaperdeev05/kalkastop-archive)
+- 📱 **Telegram Channel**: [@kalkastop](https://t.me/kalkastop)
+
 ---
 
 ## 🏗️ Architecture Overview
